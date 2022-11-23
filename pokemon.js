@@ -83,52 +83,49 @@ let pokemons = [
 
 // ejercicio1----------------
 
-// function base_damageMenorMayor(pokemons) {
-//   pokemons.sort((a, b) => {
-//     if (a.base_damage < b.base_damage) {
-//       return -1;
-//     } else if (a.base_damage > b.base_damage) {
-//       return 1;
-//     } else {
-//       return 0;
-//     }
-//   });
-//   return pokemons;
-// }
+function base_damageMenorMayor(pokemons) {
+  pokemons.sort((a, b) => {
+    if (a.base_damage < b.base_damage) {
+      return -1;
+    } else if (a.base_damage > b.base_damage) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  return pokemons;
+}
 
-// console.log(base_damageMenorMayor(pokemons));
+console.log(base_damageMenorMayor(pokemons));
 
 // ejercicio2----------------
 
-// function sortPokemons(arguments) {
-//   let validInput = ["type", "base_damage", "base_hp", "speed"];
-//   if (validInput.includes(arguments)) {
-//     let result =
-//       arguments === "type"
-//         ? pokemons.sort((a, b) => a[arguments].localeCompare(b[arguments]))
-//         : pokemons.sort((a, b) => a[arguments].localeCompare(b[arguments]));
-//     console.log(result);
-//   } else {
-//     console.log("debes ingresar un argumento valido");
-//   }
-// }
+function sortPokemons(argument) {
+  let validInput = ["name", "id", "type", "base_damage", "base_hp", "speed"];
 
-// sortPokemons("type");
+  if (validInput.includes(argument)) {
+    argument === "type" || argument === "name"
+      ? pokemons.sort((a, b) => a[argument].localeCompare(b[argument]))
+      : pokemons.sort((a, b) => a[argument] - b[argument]);
+  } else {
+    console.log("Debes ingresar un argumento valido!");
+  }
+}
 
-// ej3
+// ej3-------------------
 
-// function filterPokemons(argument) {
-//   let filteredPokemon = pokemons.filter(
-//     (pokemons) => pokemons.type === argument
-//   );
-//   let result =
-//     filteredPokemon.length === 0
-//       ? "tipo de pokemon no encontrado"
-//       : filteredPokemon;
+function filterPokemons(argument) {
+  let filteredPokemon = pokemons.filter(
+    (pokemons) => pokemons.type === argument
+  );
+  let result =
+    filteredPokemon.length === 0
+      ? "tipo de pokemon no encontrado"
+      : filteredPokemon;
 
-//   console.log(result);
-// }
-// filterPokemons("fire");
+  console.log(result);
+}
+filterPokemons("fire");
 
 //ejercicio4-----------------
 
@@ -139,13 +136,12 @@ let pokemonMaster = {
   pokemon: [],
 };
 
-// ejercicio5-----------------------
+// // ejercicio5-----------------------
 
 function pokk(a, b) {
   pokemonAzar = Math.floor(Math.random() * b.length);
 
   a.pokemon.push(b[pokemonAzar]);
-
   console.log(a);
 }
 
@@ -174,9 +170,10 @@ function calcDamage(pokemon) {
   return daño;
 }
 console.log(calcDamage(pokemons[0]));
+
 //ejercicio8------------
+
 function sortMaxDamage(pokes) {
-  //copiar el objeto sin morir en el intento
   let newPokes = JSON.parse(JSON.stringify(pokes));
   newPokes.sort((a, b) => {
     if (a.base_damage + a.max_damage > b.base_damage + b.max_damage) {
@@ -190,3 +187,57 @@ function sortMaxDamage(pokes) {
   return newPokes;
 }
 console.log(sortMaxDamage(pokemons));
+
+// ejercicio9-------------------
+
+let container = document.getElementById("container");
+
+let ul = document.createElement("ul");
+// container.append(ul);
+
+pokemons.forEach((pokemon) => {
+  let li = document.createElement("li");
+  li.textContent = pokemon.name;
+  li.addEventListener("click", () => calcDamage(1));
+  ul.append(li);
+});
+
+//ejercicio10 y ejercicio 11 juntos--------------
+
+const root = document.getElementById("root");
+const table = document.createElement("table");
+root.append(table);
+
+const tr = document.createElement("tr");
+table.append(tr);
+
+//HEADERS
+
+for (const property in pokemons[0]) {
+  const th = document.createElement("th");
+  th.textContent = property;
+  th.style.cursor = "pointer";
+  th.addEventListener("click", (e) => {
+    e.preventDefault();
+    sortPokemons(property);
+    table.innerHTML = "";
+    table.append(tr);
+    renderBody();
+  });
+  tr.append(th);
+}
+
+//TABLE BODY
+function renderBody() {
+  for (let i = 0; i < pokemons.length; i++) {
+    const trb = document.createElement("tr");
+    const values = Object.values(pokemons[i]);
+
+    for (let j = 0; j < values.length; j++) {
+      const tdb = document.createElement("td");
+      tdb.textContent = values[j];
+      trb.append(tdb);
+    }
+    table.append(trb);
+  }
+}
