@@ -190,15 +190,12 @@ console.log(sortMaxDamage(pokemons));
 
 // ejercicio9-------------------
 
-let container = document.getElementById("container");
-
+let container = document.getElementById("root");
 let ul = document.createElement("ul");
-// container.append(ul);
-
 pokemons.forEach((pokemon) => {
   let li = document.createElement("li");
   li.textContent = pokemon.name;
-  li.addEventListener("click", () => calcDamage(1));
+  //li.addEventListener("click", () => calcDamage(1));
   ul.append(li);
 });
 
@@ -206,6 +203,7 @@ pokemons.forEach((pokemon) => {
 
 const root = document.getElementById("root");
 const table = document.createElement("table");
+table.style.textAlign = "center";
 root.append(table);
 
 const tr = document.createElement("tr");
@@ -217,6 +215,7 @@ for (const property in pokemons[0]) {
   const th = document.createElement("th");
   th.textContent = property;
   th.style.cursor = "pointer";
+  th.style.border = "1px solid black";
   th.addEventListener("click", (e) => {
     e.preventDefault();
     sortPokemons(property);
